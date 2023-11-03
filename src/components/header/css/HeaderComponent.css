@@ -1,0 +1,26 @@
+.header {
+    background-color: lightslategray;
+    color: black;
+    font: bold 20px sans-serif;
+    display: flex;
+    flex-wrap: wrap;
+    height: 5%;
+    justify-content: space-between;
+    align-items: center;
+}
+.header .left-side-menu {
+    margin: 15px;
+}
+
+.header .right-side-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px;
+}
+a{
+    color: black;
+}
+a:hover{
+    color: darkcyan;
+}
