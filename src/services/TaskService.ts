@@ -41,7 +41,53 @@ export const getTask = async (userId: number, taskId: string, token: string | nu
         throw new Error('Failed to fetch task');
     }
 };
+export const cancelFolderTask = async (userId: number, taskId: string, token: string): Promise<Task> => {
+    const response = await fetch(`${API_BASE_URL}/api/v1/storage/folder/task/${userId}/${taskId}/cancel`, {
+        method: 'PUT',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
+    });
 
+    if (response.ok) {
+        const responseData: Task = await response.json();
+        return responseData;
+    } else {
+        throw new Error('Failed to cancel folder task');
+    }
+};
+
+export const stopFolderTask = async (userId: number, taskId: string, token: string): Promise<Task> => {
+    const response = await fetch(`${API_BASE_URL}/api/v1/storage/folder/task/${userId}/${taskId}/stop`, {
+        method: 'PUT',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+    });
+
+    if (response.ok) {
+        const responseData: Task = await response.json();
+        return responseData;
+    } else {
+        throw new Error('Failed to stop folder task');
+    }
+};
+
+export const resumeFolderTask = async (userId: number, taskId: string, token: string): Promise<Task> => {
+    const response = await fetch(`${API_BASE_URL}/api/v1/storage/folder/task/${userId}/${taskId}/resume`, {
+        method: 'PUT',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+    });
+
+    if (response.ok) {
+        const responseData: Task = await response.json();
+        return responseData;
+    } else {
+        throw new Error('Failed to resume folder task');
+    }
+};
 export const createTask = async (userId: number | null, task: TaskRequest, token: string | null): Promise<Task> => {
     const response = await fetch(`${API_BASE_URL}/api/v1/storage/folder/${userId}`, {
         method: 'PUT',
