@@ -8,7 +8,9 @@ const HeaderComponent = () => {
             <div className="left-side-menu">
                 Cloud-app
             </div>
-            <NavigationComponent/>
+            <div className="right-side-menu">
+                <NavigationComponent/>
+            </div>
         </div>
     );
 }

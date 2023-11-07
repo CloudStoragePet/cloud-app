@@ -1,14 +1,12 @@
 import {NavLink} from "react-router-dom";
-
-const Navigation = () => {
+import './css/NavigationComponent.css';
+const NavigationComponent = () => {
     return (
-        <div className={"right-side-menu"}>
-            <nav>
+            <nav className={"nav-main"}>
                 <NavLink to="/">Home</NavLink>
                 <NavLink to="/auth">Auth</NavLink>
             </nav>
-        </div>
     );
 }
 
-export default Navigation;
+export default NavigationComponent;

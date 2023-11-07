@@ -9,10 +9,9 @@ import {PrivateRoute} from "./routes/PrivateRoute";
 
 function App() {
     return (
-        <Layout>
+        <Layout className={"app-layout"}>
             <BrowserRouter>
                 <HeaderComponent/>
-
                 <Routes>
                     <Route path={"/auth"} Component={AuthPage}/>
                     <Route path={"/"} element={<PrivateRoute component={HomePage}/>}/>

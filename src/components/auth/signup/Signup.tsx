@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Form, Input} from 'antd';
+import {Button, Form, Input, message} from 'antd';
 import './Signup.css';
 import { useAuth } from '../../../utils/IAuthContext'; // Adjust the path to your AuthContext
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const Signup = () => {
     const navigate = useNavigate();
     const { register } = useAuth();
+
     const onFinish = async (values: any) => {
         const {firstName, lastName, email, password, confirmPassword } = values;
         try {
@@ -16,7 +17,8 @@ const Signup = () => {
             navigate('/auth');
         } catch (error) {
             console.error('Failed:', error);
-            // Handle the login error here
+            // Display the error message
+            message.error('Sign-up failed.');
         }
     };
 

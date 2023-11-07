@@ -1,12 +1,12 @@
 import React from 'react';
-
+import './css/TaskCreationButton.css'
 interface TaskCreationButtonProps {
     onClick: () => void;
 }
 
 const TaskCreationButton: React.FC<TaskCreationButtonProps> = ({ onClick }) => {
     return (
-        <button onClick={onClick}>Create New Task</button>
+        <button className="taskCreationButton" onClick={onClick}>Create New Task</button>
     );
 };
 

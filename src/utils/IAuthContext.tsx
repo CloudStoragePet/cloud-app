@@ -65,7 +65,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
             await signUp(request);
         } catch (error) {
             console.error(error);
-            // Handle authentication error as needed
+            throw error;
         }
     };
 

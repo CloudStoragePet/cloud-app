@@ -4,7 +4,7 @@
     font: bold 20px sans-serif;
     display: flex;
     flex-wrap: wrap;
-    height: 5%;
+    height: 65px;
     justify-content: space-between;
     align-items: center;
 }
@@ -17,10 +17,4 @@
     justify-content: space-between;
     align-items: center;
     margin: 15px;
-}
-a{
-    color: black;
-}
-a:hover{
-    color: darkcyan;
 }

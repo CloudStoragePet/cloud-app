@@ -13,6 +13,9 @@ import {
 } from "../../services/TaskService";
 import {useAuth} from "../../utils/IAuthContext";
 
+import './css/TaskPage.css';
+import {message} from "antd";
+
 const TaskPage: React.FC = () => {
     const [tasks, setTasks] = useState<Task[] | null>(null); // Mock task data structure
     const [showTaskCreationForm, setShowTaskCreationForm] = useState(false);
@@ -50,6 +53,7 @@ const TaskPage: React.FC = () => {
                 updateTask(updatedTask);
             } catch (error) {
                 console.error("Failed to stop task", error);
+                message.error("Failed to stop task");
             }
         }
     };
@@ -62,21 +66,51 @@ const TaskPage: React.FC = () => {
                 updateTask(updatedTask);
             } catch (error) {
                 console.error("Failed to cancel task", error);
+                message.error("Failed to cancel task");
             }
         }
     };
 
     const handleResume = async (taskId: string) => {
         if (id !== null && token !== null) {
+            if (!isFreeResourcesForTask()) {
+                message.error("You have reached the maximum number of tasks (5)");
+                return;
+            }
             try {
                 const updatedTask = await resumeFolderTask(id, taskId, token);
                 console.log("Task resumed:", updatedTask);
                 updateTask(updatedTask);
             } catch (error) {
                 console.error("Failed to resume task", error);
+                message.error("Failed to resume task");
             }
         }
     };
+    // check max task number with status IN_PROGRESS
+    const isFreeResourcesForTask = (): boolean => {
+        if (tasks != null) {
+            let count = 0;
+            tasks.forEach(task => {
+                if (task.status === 'IN_PROGRESS') {
+                    count++;
+                }
+            });
+            if (count >= 5) {
+                return false;
+            }
+        }
+        return true;
+    }
+    // validate Task Creation
+    const validateRequestTask = (task: TaskRequest): boolean => {
+        // check if sourceFolderId is null and not bigger than integer
+        if (task.sourceFolderId == null || task.sourceFolderId < 0) {
+            message.error("Source folder id is invalid");
+            return false;
+        }
+        return true;
+    }
     const handleTaskCreation = async (sourceFolderId: number) => {
         // Create the task object with the specified complexity
         const task: TaskRequest = {
@@ -85,6 +119,13 @@ const TaskPage: React.FC = () => {
             destinationFolderId: sourceFolderId
             // Other task properties, if any
         };
+        if (!isFreeResourcesForTask()) {
+            message.error("You have reached the maximum number of tasks (5)");
+            return;
+        }
+        if (!validateRequestTask(task)) {
+            return;
+        }
         try {
             const createdTask = await createTask(id, task, token);
             console.log('Task Created with complexity:', createdTask);
@@ -100,9 +141,9 @@ const TaskPage: React.FC = () => {
     };
 
     return (
-        <div>
-            <TaskList tasks={tasks} onStop={handleStop} onCancel={handleCancel} onResume={handleResume}/>
+        <div className="task-page-main">
             <TaskCreationButton onClick={() => setShowTaskCreationForm(true)}/>
+            <TaskList tasks={tasks} onStop={handleStop} onCancel={handleCancel} onResume={handleResume}/>
             <TaskCreationForm
                 visible={showTaskCreationForm}
                 onCreate={handleTaskCreation}
