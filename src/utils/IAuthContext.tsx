@@ -10,7 +10,7 @@ interface IAuthContext {
 
     register(firstName: string, lastName: string, email: string, password: string, confirmPassword: string): Promise<void>;
 
-    logout(callback: () => void): void;
+    logout(): void;
 }
 
 const AuthContext = createContext<IAuthContext>({} as IAuthContext);
@@ -24,16 +24,18 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
 
     const [id, setId] = useState<number | null>(() => {
         const storedId = localStorage.getItem('id');
         if (storedId) {
+            setIsAuthenticated(true);
             return parseInt(storedId, 10);
         }
         return null;
     });
 
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const [token, setToken] = useState<string | null>(() => {
         return localStorage.getItem('JWT');
@@ -52,6 +54,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
             // Save the info into localStorage
             localStorage.setItem('JWT', responseData.token);
             localStorage.setItem('id', responseData.id.toString());
+            setIsAuthenticated(true);
             setId(responseData.id);
             setToken(responseData.token);
         } catch (error) {
@@ -69,7 +72,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
         }
     };
 
-    const logout = (callback: () => void) => {
+    const logout = () => {
         // Remove JWT token from local storage.
         setToken(null);
         setIsAuthenticated(false);
@@ -77,8 +80,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
         // Remove the JWT token from local storage
         localStorage.removeItem('JWT');
         localStorage.removeItem('id');
-
-        callback();
     };
 
     return (

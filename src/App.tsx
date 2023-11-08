@@ -6,6 +6,7 @@ import React from "react";
 import HomePage from "./pages/home/HomePage";
 import AuthPage from "./pages/auth/AuthPage";
 import {PrivateRoute} from "./routes/PrivateRoute";
+import Logout from "./components/auth/logout/Logout";
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
                 <HeaderComponent/>
                 <Routes>
                     <Route path={"/auth"} Component={AuthPage}/>
+                    <Route path={"/logout"} Component={Logout}/>
                     <Route path={"/"} element={<PrivateRoute component={HomePage}/>}/>
                 </Routes>
             </BrowserRouter>

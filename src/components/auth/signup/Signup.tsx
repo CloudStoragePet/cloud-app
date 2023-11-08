@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Form, Input, message} from 'antd';
-import './Signup.css';
+import './css/Signup.css';
 import { useAuth } from '../../../utils/IAuthContext'; // Adjust the path to your AuthContext
 import { useNavigate } from 'react-router-dom';
 

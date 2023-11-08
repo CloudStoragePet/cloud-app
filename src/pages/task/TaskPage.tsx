@@ -121,7 +121,7 @@ const TaskPage: React.FC = () => {
         };
         if (!isFreeResourcesForTask()) {
             message.error("You have reached the maximum number of tasks (5)");
-            return;
+         //   return;
         }
         if (!validateRequestTask(task)) {
             return;
