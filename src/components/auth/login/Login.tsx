@@ -1,60 +1,36 @@
-import React from 'react';
-import {Button, Form, Input} from 'antd';
-import { message } from 'antd';
-import './css/Login.css';
-import { useAuth } from '../../../utils/IAuthContext'; // Adjust the path to your AuthContext
-import { useNavigate } from 'react-router-dom';
-import './css/Login.css';
-const Login = () => {
+import React, {useEffect} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
+import AuthService from "../../../services/authService";
+import {message} from "antd";
+
+const useQuery = () => {
+    return new URLSearchParams(useLocation().search);
+};
+
+const Login: React.FC = () => {
     const navigate = useNavigate();
-    const { authenticate } = useAuth();
+    const query = useQuery();
 
-    const onFinish = async (values: any) => {
-        const { email, password } = values;
-        try {
-            await authenticate(email, password);
-            console.log('Success:', values);
-            // Navigate to the logged-in area of your application here
-            navigate('/');
-        } catch (error) {
-            console.error('Failed:', error);
-            // Display the error message
-            message.error('Authentication failed. Please check your email and password.');
+    useEffect(() => {
+        const code = query.get("code");
+
+        if (code) {
+            AuthService.handleAuthentication(code).then(() => {
+                navigate("/");
+            }).catch((error) => {
+                    console.error(error);
+                    message.error("Failed to log in");
+                    navigate("/");
+                }
+            );
         }
-    };
-
-    const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
-    }
+    });
 
     return (
-        <Form className={"login-form"}
-            name={"login"}
-            initialValues={{remember: true}}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-        >
-            <Form.Item className={"login-form-item"}
-                label={"Email"}
-                name={"email"}
-                rules={[{required: true, message: "Please input your email"}]}>
-                <Input className={"login-form-item-input"}/>
-            </Form.Item>
-            <Form.Item className={"login-form-item"}
-                label={"Password"}
-                name={"password"}
-                rules={[{required: true, message: "Please input your password"}]}>
-                <Input.Password className={"login-form-item-input"}/>
-            </Form.Item>
-            <Button className={"login-form-button"}
-                type={"primary"}
-                htmlType={"submit"}
-            >
-                Login
-            </Button>
-        </Form>
+        <div>
+            <button onClick={AuthService.login}>Login</button>
+        </div>
     );
-
-}
+};
 
 export default Login;

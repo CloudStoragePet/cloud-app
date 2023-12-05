@@ -1,15 +1,15 @@
 import {NavLink} from "react-router-dom";
 import './css/NavigationComponent.css';
-import {useAuth} from "../../utils/IAuthContext";
+import AuthProvider from "../../services/authService";
 
 const NavigationComponent = () => {
-    const {isAuthenticated} = useAuth();
+    const isAuthenticated = AuthProvider.isAuthenticated();
     return (
         <nav className={"nav-main"}>
             <NavLink to="/">Home</NavLink>
             {isAuthenticated ?
                 <NavLink to="/logout">Logout</NavLink> :
-                <NavLink to="/auth">Auth</NavLink>
+                <NavLink to="/login">Auth</NavLink>
             }
 
         </nav>
